@@ -1,0 +1,19 @@
+spring.application:
+  name: fazon-springboot
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/fazon_db_v1
+    username: root
+    password: admin123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+server:
+  port: 8090
+
+ingenico:
+  api-key-id: 05ca0b5d914055ff
+  api-secret-key: gD6r8NoqVY3yxsD3FT41uUTX2UXXqXJvXpALD/3pdo0=
+  uri: https://api.preprod.connect.worldline-solutions.com/
