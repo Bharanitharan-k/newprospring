@@ -10,12 +10,12 @@ pipeline{
     parameters{
             choice(name: 'ENVIRONMENT' , choices: ['testing','prod'], description: 'environemnt')
     }
-    stages{
-        stage('git clone'){
-            steps{
-                git branch: 'main', credentialsId: 'github_simplybyte_credentials', url: 'https://github.com/simplybyte1266/simplybyte-springboot.git'
-            }
-        }
+    //stages{
+        //stage('git clone'){
+            //steps{
+                //git branch: 'main', credentialsId: 'github_simplybyte_credentials', url: 'https://github.com/simplybyte1266/simplybyte-springboot.git'
+           // }
+        //}
         stage('print path'){
             steps{
                 sh 'echo $PATH'
