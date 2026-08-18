@@ -3,15 +3,15 @@ pipeline {
     tools {
         maven 'mvn3.9.9' 
     }
-    environment {
-        // Updated to use your Docker Hub repository prefix
-        DOCKER_HUB_USER = 'bharanitharan9090'
-        DOCKER_IMAGE    = 'bharanitharan9090/simplybyte-calculator-jenkins-local'
-        CONTAINER_NAME  = 'simplybyte-container-calculator'
-        
-        // This securely pulls your secret token from Jenkins credentials
-        DOCKER_HUB_TOKEN = credentials('docker-hub-token')
-    }
+  environment {
+    DOCKER_HUB_USER  = 'bharanitharan9090'
+    DOCKER_IMAGE    = 'bharanitharan9090/simplybyte-calculator-jenkins-local'
+    CONTAINER_NAME  = 'simplybyte-container-calculator'
+    
+    // Changed from 'docker-hub-token' to 'docker' to match your locked Jenkins ID
+    DOCKER_HUB_TOKEN = credentials('docker') 
+}
+
     parameters {
         choice(name: 'ENVIRONMENT', choices: ['testing','prod'], description: 'Select deployment environment')
     }
