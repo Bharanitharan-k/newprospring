@@ -47,7 +47,8 @@ pipeline {
         stage('Docker Push to Hub') { 
             steps { 
                 withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) { 
-                    bat "echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin" 
+                    // FIXED: Removed trailing space before the pipe (|) symbol to prevent broken Windows batch authentication strings
+                    bat "echo %DOCKER_PASS%| docker login -u %DOCKER_USER% --password-stdin" 
                     bat "docker push %DOCKER_IMAGE%:%BUILD_NUMBER%" 
                     bat "docker logout" 
                 } 
@@ -77,9 +78,9 @@ pipeline {
                     usernamePassword(credentialsId: 'docker', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')
                 ]) { 
                     sshagent(credentials: ['prod-ssh-key']) { 
-                        // Executes via Windows CMD, passing local vars using %VAR% and targeting the remote Linux server
+                        // FIXED: Removed trailing space before the pipe (|) symbol inside the nested inline remote execution script
                         bat """
-                        ssh -o StrictHostKeyChecking=no user@%PROD_IP% "echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin && docker pull %DOCKER_IMAGE%:%BUILD_NUMBER% && docker rm -f %CONTAINER_NAME% 2>/dev/null || true && docker run -d -p 8091:8090 --name=%CONTAINER_NAME% --restart=unless-stopped %DOCKER_IMAGE%:%BUILD_NUMBER%"
+                        ssh -o StrictHostKeyChecking=no user@%PROD_IP% "echo %DOCKER_PASS%| docker login -u %DOCKER_USER% --password-stdin && docker pull %DOCKER_IMAGE%:%BUILD_NUMBER% && docker rm -f %CONTAINER_NAME% 2>/dev/null || true && docker run -d -p 8091:8090 --name=%CONTAINER_NAME% --restart=unless-stopped %DOCKER_IMAGE%:%BUILD_NUMBER%"
                         """
                     } 
                 } 
